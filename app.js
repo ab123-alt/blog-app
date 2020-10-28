@@ -15,7 +15,41 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
+let posts = [];
 
+app.get('/', (req, res) => {
+  posts
+  res.render('home', {startcontent: homeStartingContent, posts: posts});
+})
+
+app.get('/about', (req, res) => {
+  res.render('about', {content: aboutContent});
+})
+
+app.get('/contact', (req, res) => {
+  res.render('contact', {content: contactContent});
+})
+
+app.get('/compose', (req, res) => {
+  res.render('compose');
+})
+
+app.post('/compose', (req, res) => {
+  let post = {postTitle: req.body.posttitle, postBody: req.body.postbody};
+  posts.push(post);
+  res.redirect('/');
+})
+
+app.get('/posts/:title', (req, res) => {
+  console.log(req.params.title);
+  let reqTitle = req.params.title;
+  posts.forEach((post) => {
+    if( post.postTitle === reqTitle){
+      console.log('Match found!');
+    }
+  })
+  res.redirect('/');
+})
 
 
 
